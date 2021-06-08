@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_more_fitness/constants.dart';
 import 'package:just_more_fitness/di.dart';
+import 'package:just_more_fitness/model/UserProfile.dart';
 import 'package:just_more_fitness/routes.dart';
 import 'package:just_more_fitness/service/generation/db_generation.dart';
 import 'package:just_more_fitness/ui/screens/exercise_details/ExerciseDetails.dart';
@@ -8,15 +9,18 @@ import 'package:just_more_fitness/ui/screens/first_run/first_run.dart';
 import 'package:just_more_fitness/ui/screens/home/HomeScreen.dart';
 import 'package:just_more_fitness/ui/screens/splash/SplashScreen.dart';
 
-void main() {
+void main() async {
   InjectorManager.inject();
-  DBGENERATOR.init();
+
+  // await CONSTANTS.init();
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    CONSTANTS.init();
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: primaryBlack,

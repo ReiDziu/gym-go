@@ -10,10 +10,10 @@ class ChooseBodyParts extends StatelessWidget {
     this.unselectAction,
   });
 
-  final List<Goal> bodyParts;
-  final List<Goal> selectedBodyParts;
-  final ValueCallback<Goal> selectAction;
-  final ValueCallback<Goal> unselectAction;
+  final List<String> bodyParts;
+  final List<String> selectedBodyParts;
+  final ValueCallback<String> selectAction;
+  final ValueCallback<String> unselectAction;
 
 //   @override
 //   State<StatefulWidget> createState() => _ChooseGoalState();
@@ -49,11 +49,11 @@ class ChooseBodyParts extends StatelessWidget {
       // controller: _scrollController,
       itemCount: bodyParts?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        final Goal part = bodyParts[index];
+        final String part = bodyParts[index];
 
         return _BodyCell(
           isSelected: selectedBodyParts.contains(part),
-          title: part.title,
+          title: part,
           selectAction: () {
             selectAction(part);
           },

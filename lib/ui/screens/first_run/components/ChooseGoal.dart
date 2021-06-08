@@ -10,11 +10,11 @@ class ChooseGoal extends StatelessWidget {
     this.callback,
   });
 
-  final List<Goal> goals;
-  final Goal selectedGoal;
-  final ValueCallback<Goal> callback;
+  final List<String> goals;
+  final String selectedGoal;
+  final ValueCallback<String> callback;
 
-  int get selectedIndex => goals.indexWhere((Goal e) => e.title == selectedGoal.title);
+  int get selectedIndex => goals.indexWhere((String e) => e == selectedGoal);
 
 //   @override
 //   State<StatefulWidget> createState() => _ChooseGoalState();
@@ -50,11 +50,11 @@ class ChooseGoal extends StatelessWidget {
       // controller: _scrollController,
       itemCount: goals?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        final Goal goal = goals[index];
+        final String goal = goals[index];
 
         return _GoalCell(
           isSelected: selectedIndex == index,
-          title: goal.title,
+          title: goal,
           selectAction: () {
             callback(goal);
           },

@@ -1,7 +1,7 @@
-class Goal {
-  Goal({
-    this.title,
-  });
+// class Goal {
+//   Goal({
+//     this.title,
+//   });
 
-  String title;
-}
+//   String title;
+// }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:just_more_fitness/constants.dart';
 import 'package:just_more_fitness/db/DatabaseService.dart';
+import 'package:just_more_fitness/db/UserRepo.dart';
 import 'package:just_more_fitness/model/Goal.dart';
 import 'package:just_more_fitness/model/UserProfile.dart';
 import 'package:just_more_fitness/routes.dart';
+import 'package:just_more_fitness/service/generation/db_generation.dart';
 import 'package:just_more_fitness/service/navigation/navigation_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirstRunViewModel with ChangeNotifier {
   FirstRunViewModel({
@@ -12,7 +15,7 @@ class FirstRunViewModel with ChangeNotifier {
   });
 
   final NavigationService navigationService;
-  UserProfile user = RAMDB.appInstance.user..selectedGoal = goals[0];
+  UserProfile user; //RAMDB.appInstance.user..selectedGoal = CONSTANTS.allGoals[0];
 
   get sex => user.sex;
 
@@ -22,61 +25,47 @@ class FirstRunViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  static final List<Goal> goals = [
-    Goal(title: 'Скинути вагу'),
-    Goal(title: 'Покращити фігуру'),
-    Goal(title: 'Набрати масу'),
-    Goal(title: "Накачати м'язи"),
-  ];
+  List<String> selectedBodyParts = [];
 
-  static final List<Goal> bodyParts = [
-    Goal(title: "М'язи рук"),
-    Goal(title: "М'язи ніг"),
-    Goal(title: "М'язи пресу"),
-    Goal(title: "М'язи спини"),
-  ];
-
-  List<Goal> selectedBodyParts = [];
-
-  void selectBodyPart(Goal part) {
+  void selectBodyPart(String part) {
     selectedBodyParts.add(part);
     notifyListeners();
   }
 
-  void removeBodyPart(Goal part) {
+  void removeBodyPart(String part) {
     selectedBodyParts.remove(part);
     notifyListeners();
   }
 
-  Goal get selectedGoal => user.selectedGoal;
+  String get selectedGoal => user?.selectedGoal;
 
-  set selectedGoal(Goal goal) {
+  set selectedGoal(String goal) {
     user.selectedGoal = goal;
     notifyListeners();
   }
 
-  int get selectedLevel => user.selectedLevel;
+  int get selectedLevel => user?.selectedLevel;
 
   set selectedLevel(int level) {
     user.selectedLevel = level;
     notifyListeners();
   }
 
-  int get age => user.age;
+  int get age => user?.age;
 
   set age(int value) {
     user.age = value;
     notifyListeners();
   }
 
-  int get height => user.height;
+  int get height => user?.height;
 
   set height(int value) {
     user.height = value;
     notifyListeners();
   }
 
-  int get weight => user.weight;
+  int get weight => user?.weight;
 
   set weight(int value) {
     user.weight = value;
@@ -86,6 +75,11 @@ class FirstRunViewModel with ChangeNotifier {
   // ValueCallback<void> nextPageAction;
   ValueCallback<String> snackAction;
 
-  void nextPageAction(int currentPage, VoidCallback callback, BuildContext context) =>
-      currentPage == 4 ? Navigator.pushReplacementNamed(context, HOME_SCREEN) : callback();
+  void nextPageAction(int page, VoidCallback callback, BuildContext context) => page == 4 ? _move(context) : callback();
+
+  Future<void> _move(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserRepo.setUser(user, prefs);
+    Navigator.pushReplacementNamed(context, HOME_SCREEN);
+  }
 }

@@ -169,18 +169,22 @@ class _ExerciseViewState extends State<ExerciseView> {
 
   Timer _timer;
 
-  DateTime buyTime = DateTime.now().add(Duration(milliseconds: 1));
+  DateTime buyTime = DateTime.now(); //.add(Duration(milliseconds: 1));
 
-  Duration get z =>
-      buyTime.add(widget.exercise.duration).difference(DateTime.now());
+  Duration get z => buyTime.add(widget.exercise.duration).difference(DateTime.now());
 
   String get exerciseTimer => DateTimeUtils.convertTimerTime(z);
 
+  bool get isActive => _timer?.isActive ?? false;
+
   void startExercise() async {
     buyTime = DateTime.now();
-    z.isNegative
-        ? stopRefreshPage()
-        : _timer = Timer.periodic(Duration(seconds: 1), (_) => setState(() {}));
+    z.isNegative ? stopRefreshPage() : _timer = Timer.periodic(Duration(seconds: 1), (_) => setState(() {}));
+  }
+
+  void stopExercise() async {
+    stopRefreshPage();
+    setState(() => buyTime = DateTime.now());
   }
 
   void stopRefreshPage() {
@@ -235,13 +239,13 @@ class _ExerciseViewState extends State<ExerciseView> {
                   ),
                 RawMaterialButton(
                   onPressed: () {
-                    startExercise();
+                    isActive ? stopExercise() : startExercise();
                   },
-                  fillColor: Colors.green,
+                  fillColor: isActive ? Colors.red : Colors.green,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: const Text(
-                      'Почати вправу',
+                    child: Text(
+                      isActive ? 'Закінчити вправу' : 'Почати вправу',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 23,

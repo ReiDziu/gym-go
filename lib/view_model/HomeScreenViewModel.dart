@@ -5,6 +5,7 @@ import 'package:just_more_fitness/model/Exercise.dart';
 import 'package:just_more_fitness/model/Goal.dart';
 import 'package:just_more_fitness/model/UserProfile.dart';
 import 'package:just_more_fitness/routes.dart';
+import 'package:just_more_fitness/service/generation/db_generation.dart';
 import 'package:just_more_fitness/service/navigation/navigation_service.dart';
 import 'package:just_more_fitness/view_model/first_run_view_model.dart';
 
@@ -18,21 +19,21 @@ class HomeScreenViewModel with ChangeNotifier {
 
   final List<Exercise> exercises = RAMDB.appInstance.exercises;
 
-  List<Goal> selectedBodyParts;
+  List<String> selectedBodyParts;
 
-  void selectBodyPart(Goal part) {
+  void selectBodyPart(String part) {
     selectedBodyParts.add(part);
     notifyListeners();
   }
 
-  void removeBodyPart(Goal part) {
+  void removeBodyPart(String part) {
     selectedBodyParts.remove(part);
     notifyListeners();
   }
 
-  Goal get selectedGoal => user.selectedGoal;
+  String get selectedGoal => user.selectedGoal;
 
-  set selectedGoal(Goal goal) {
+  set selectedGoal(String goal) {
     user.selectedGoal = goal;
     notifyListeners();
   }
@@ -66,18 +67,23 @@ class HomeScreenViewModel with ChangeNotifier {
   }
 
   double get caloriesGoal =>
-      ((user.age < 40 ? 2000 : 1600) + (user.sex == Sex.FEMALE ? 0 : 400) + (user.selectedLevel * 100)) *
-          (user.selectedGoal.title == FirstRunViewModel.goals[0].title ? 0.85 : 1.0) *
-          (user.selectedGoal.title == FirstRunViewModel.goals[2].title ? 1.2 : 1.0) *
-          (user.selectedGoal.title == FirstRunViewModel.goals[3].title ? 1.1 : 1.0);
+      ((user.age < 40 ? 2000 : 1600) +
+          (user.sex == Sex.FEMALE ? 0 : 400) +
+          (user.selectedLevel * 100)) *
+      (user.selectedGoal == CONSTANTS.allGoals[0] ? 0.85 : 1.0) *
+      (user.selectedGoal == CONSTANTS.allGoals[2] ? 1.2 : 1.0) *
+      (user.selectedGoal == CONSTANTS.allGoals[3] ? 1.1 : 1.0);
 
   double get drinkGoal => user.weight * 40.0;
 
   // ValueCallback<void> nextPageAction;
   ValueCallback<String> snackAction;
 
-  void nextPageAction(int currentPage, VoidCallback callback, BuildContext context) {
+  void nextPageAction(
+      int currentPage, VoidCallback callback, BuildContext context) {
     RAMDB.appInstance.user = user;
-    currentPage == 4 ? Navigator.pushReplacementNamed(context, HOME_SCREEN) : callback();
+    currentPage == 4
+        ? Navigator.pushReplacementNamed(context, HOME_SCREEN)
+        : callback();
   }
 }
