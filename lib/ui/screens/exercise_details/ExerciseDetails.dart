@@ -41,7 +41,7 @@ class ExerciseDetailsScreen extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                width: MediaQuery.of(context).size.width*0.8,
+                width: MediaQuery.of(context).size.width * 0.8,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,7 +68,7 @@ class ExerciseDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${exercise.time} хвилин',
+                          '${exercise.time} секунд',
                           style: TextStyle(
                             fontSize: 16,
                             // color: Colors.black,
@@ -171,13 +171,16 @@ class _ExerciseViewState extends State<ExerciseView> {
 
   DateTime buyTime = DateTime.now().add(Duration(milliseconds: 1));
 
-  Duration get z => buyTime.add(widget.exercise.duration).difference(DateTime.now());
+  Duration get z =>
+      buyTime.add(widget.exercise.duration).difference(DateTime.now());
 
   String get exerciseTimer => DateTimeUtils.convertTimerTime(z);
 
   void startExercise() async {
     buyTime = DateTime.now();
-    z.isNegative ? stopRefreshPage() : _timer = Timer.periodic(Duration(seconds: 1), (_) => setState(() {}));
+    z.isNegative
+        ? stopRefreshPage()
+        : _timer = Timer.periodic(Duration(seconds: 1), (_) => setState(() {}));
   }
 
   void stopRefreshPage() {
@@ -216,19 +219,20 @@ class _ExerciseViewState extends State<ExerciseView> {
             width: double.infinity,
             child: Column(
               children: [
-                if(!z.isNegative)Center(
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 15),
-                    child: Text(
-                      '${exerciseTimer}',
-                      style: TextStyle(
-                        color: Colors.lightGreen,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 38,
+                if (!z.isNegative)
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      child: Text(
+                        '${exerciseTimer}',
+                        style: TextStyle(
+                          color: Colors.lightGreen,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 38,
+                        ),
                       ),
                     ),
                   ),
-                ),
                 RawMaterialButton(
                   onPressed: () {
                     startExercise();

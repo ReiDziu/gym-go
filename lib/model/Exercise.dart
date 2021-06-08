@@ -15,7 +15,7 @@ class Exercise {
   Duration interval;
   int amount;
 
-  String get time => duration.inMinutes.toString();
+  String get time => duration.inSeconds.toString();
 
   String get rest => interval.inMinutes.toString();
 }
