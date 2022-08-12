@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gym_go/constant/constants.dart';
-import 'package:gym_go/model/Goal.dart';
 
 class ChooseGoal extends StatelessWidget {
   ///StatefulWidget {

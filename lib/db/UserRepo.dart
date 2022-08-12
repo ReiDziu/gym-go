@@ -1,4 +1,4 @@
-import 'package:just_more_fitness/model/UserProfile.dart';
+import 'package:gym_go/model/UserProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepo {

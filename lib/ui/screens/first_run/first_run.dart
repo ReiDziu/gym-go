@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
+import 'package:gym_go/db/UserRepo.dart';
 import 'package:gym_go/model/UserProfile.dart';
+import 'package:gym_go/service/generation/db_generation.dart';
 import 'package:gym_go/ui/screens/first_run/components/ChooseBodyParts.dart';
 import 'package:gym_go/ui/screens/first_run/components/ChooseGoal.dart';
 import 'package:gym_go/ui/screens/first_run/components/SliderSwitch.dart';
@@ -38,7 +41,7 @@ class _FirstRunState extends State<FirstRun> {
       initialPage: currentPage,
     );
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       viewModel.user = UserRepo.getUser(prefs)..selectedGoal = CONSTANTS.allGoals[0];
       setState(() => frameLoading = false);

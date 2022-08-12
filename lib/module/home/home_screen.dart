@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:gym_go/constant/colors.dart';
 import 'package:gym_go/constant/constants.dart';
+import 'package:gym_go/db/UserRepo.dart';
 import 'package:gym_go/db/database_service.dart';
 import 'package:gym_go/model/UserProfile.dart';
 import 'package:gym_go/module/home/components/ChooseExercise.dart';
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool frameLoading = true;
 
-  UserProfile user; // = RAMDB.appInstance.user;
+  late UserProfile user; // = RAMDB.appInstance.user;
 
   final HomeScreenViewModel viewModel = Injector.appInstance.get<HomeScreenViewModel>();
 
@@ -79,14 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text('text'),
+                      child: const Text('text'),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text('text'),
+                      child: const Text('text'),
                     ),
                   ),
                 ],

@@ -3,10 +3,9 @@ import 'package:gym_go/constant/constants.dart';
 import 'package:gym_go/constant/routes.dart';
 import 'package:gym_go/db/database_service.dart';
 import 'package:gym_go/model/Exercise.dart';
-import 'package:gym_go/model/Goal.dart';
 import 'package:gym_go/model/UserProfile.dart';
+import 'package:gym_go/service/generation/db_generation.dart';
 import 'package:gym_go/service/navigation/navigation_service.dart';
-import 'package:gym_go/ui/screens/first_run/first_run_view_model.dart';
 
 class HomeScreenViewModel with ChangeNotifier {
   HomeScreenViewModel({
@@ -37,7 +36,7 @@ class HomeScreenViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  int get selectedLevel => user.selectedLevel!;
+  int get selectedLevel => user.selectedLevel;
 
   set selectedLevel(int level) {
     user.selectedLevel = level;
@@ -58,7 +57,7 @@ class HomeScreenViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  int get weight => user.weight!;
+  int get weight => user.weight;
 
   set weight(int value) {
     user.weight = value;
@@ -66,23 +65,18 @@ class HomeScreenViewModel with ChangeNotifier {
   }
 
   double get caloriesGoal =>
-      ((user.age < 40 ? 2000 : 1600) +
-          (user.sex == Sex.FEMALE ? 0 : 400) +
-          (user.selectedLevel * 100)) *
+      ((user.age < 40 ? 2000 : 1600) + (user.sex == Sex.FEMALE ? 0 : 400) + (user.selectedLevel * 100)) *
       (user.selectedGoal == CONSTANTS.allGoals[0] ? 0.85 : 1.0) *
       (user.selectedGoal == CONSTANTS.allGoals[2] ? 1.2 : 1.0) *
       (user.selectedGoal == CONSTANTS.allGoals[3] ? 1.1 : 1.0);
 
-  double get drinkGoal => user.weight! * 40.0;
+  double get drinkGoal => user.weight * 40.0;
 
   // ValueCallback<void> nextPageAction;
   late ValueCallback<String> snackAction;
 
-  void nextPageAction(
-      int currentPage, VoidCallback callback, BuildContext context) {
+  void nextPageAction(int currentPage, VoidCallback callback, BuildContext context) {
     RAMDB.appInstance.user = user;
-    currentPage == 4
-        ? Navigator.pushReplacementNamed(context, HOME_SCREEN)
-        : callback();
+    currentPage == 4 ? Navigator.pushReplacementNamed(context, HOME_SCREEN) : callback();
   }
 }
