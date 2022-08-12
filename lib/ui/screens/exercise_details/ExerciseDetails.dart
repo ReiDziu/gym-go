@@ -171,7 +171,7 @@ class _ExerciseViewState extends State<ExerciseView> {
 
   Timer? _timer;
 
-  DateTime buyTime = DateTime.now().add(Duration(seconds: 1));
+  DateTime buyTime = DateTime.now().add(const Duration(seconds: 1));
 
   Duration get z => buyTime.add(widget.exercise.duration).difference(DateTime.now());
 
@@ -184,15 +184,16 @@ class _ExerciseViewState extends State<ExerciseView> {
     z.isNegative
         ? stopExercise()
         : _timer = Timer.periodic(
-            Duration(seconds: 1),
+            const Duration(seconds: 1),
             (_) => setState(() {
-                  if (z.isNegative) stopExercise();
-                }));
+              if (z.isNegative) stopExercise();
+            }),
+          );
   }
 
   void stopExercise() {
     stopRefreshPage();
-    setState(() => buyTime = DateTime.now().add(Duration(seconds: 1)));
+    setState(() => buyTime = DateTime.now().add(const Duration(seconds: 1)));
   }
 
   void stopRefreshPage() {
@@ -254,7 +255,7 @@ class _ExerciseViewState extends State<ExerciseView> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       isActive ? 'Закінчити вправу' : 'Почати вправу',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23,
                       ),

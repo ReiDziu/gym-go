@@ -1,11 +1,13 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
 import 'package:gym_go/db/database_service.dart';
-import 'package:gym_go/db/UserRepo.dart';
+import 'package:gym_go/db/user_repo.dart';
 import 'package:gym_go/model/Exercise.dart';
 import 'package:gym_go/model/UserProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CONSTANTS {
-  static init() async {
+  static Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     UserProfile.init(prefs);

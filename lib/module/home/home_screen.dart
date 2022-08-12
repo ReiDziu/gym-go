@@ -3,12 +3,10 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:gym_go/constant/colors.dart';
 import 'package:gym_go/constant/constants.dart';
-import 'package:gym_go/db/UserRepo.dart';
-import 'package:gym_go/db/database_service.dart';
+import 'package:gym_go/db/user_repo.dart';
 import 'package:gym_go/model/UserProfile.dart';
 import 'package:gym_go/module/home/components/ChooseExercise.dart';
 import 'package:gym_go/module/home/home_screen_vm.dart';
-import 'package:gym_go/ui/screens/eat/EatProgram.dart';
 import 'package:gym_go/ui/screens/exercise_details/ExerciseDetails.dart';
 import 'package:injector/injector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,10 +21,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late SharedPreferences prefs;
 
-  bool _isAppBarOpen = true;
-
-  bool frameLoading = true;
-
   late UserProfile user; // = RAMDB.appInstance.user;
 
   final HomeScreenViewModel viewModel = Injector.appInstance.get<HomeScreenViewModel>();
@@ -39,14 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
       prefs = await SharedPreferences.getInstance();
 
       user = UserRepo.getUser(prefs);
-
-      setState(() => frameLoading = false);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Row(

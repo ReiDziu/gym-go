@@ -17,7 +17,7 @@ void main() {
 
   // await CONSTANTS.init();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

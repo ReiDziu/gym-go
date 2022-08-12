@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
 import 'package:gym_go/model/UserProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,11 +23,12 @@ class UserRepo {
   }
 
   static void setUser(UserProfile user, SharedPreferences prefs) {
-    prefs.setBool('userRegistered', true);
-    prefs.setBool('genderMale', user.sex == Sex.MALE);
-    prefs.setInt('level', user.selectedLevel);
-    prefs.setInt('age', user.age);
-    prefs.setInt('height', user.height);
-    prefs.setInt('weight', user.weight);
+    prefs
+      ..setBool('userRegistered', true)
+      ..setBool('genderMale', user.sex == Sex.MALE)
+      ..setInt('level', user.selectedLevel)
+      ..setInt('age', user.age)
+      ..setInt('height', user.height)
+      ..setInt('weight', user.weight);
   }
 }
