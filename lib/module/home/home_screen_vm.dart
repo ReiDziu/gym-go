@@ -36,7 +36,7 @@ class HomeScreenViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  int get selectedLevel => user.selectedLevel;
+  int get selectedLevel => user.selectedLevel!;
 
   set selectedLevel(int level) {
     user.selectedLevel = level;
@@ -70,7 +70,7 @@ class HomeScreenViewModel with ChangeNotifier {
       (user.selectedGoal == CONSTANTS.allGoals[2] ? 1.2 : 1.0) *
       (user.selectedGoal == CONSTANTS.allGoals[3] ? 1.1 : 1.0);
 
-  double get drinkGoal => user.weight * 40.0;
+  double get drinkGoal => user.weight! * 40.0;
 
   // ValueCallback<void> nextPageAction;
   late ValueCallback<String> snackAction;

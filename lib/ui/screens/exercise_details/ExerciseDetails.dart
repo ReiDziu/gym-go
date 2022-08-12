@@ -67,7 +67,7 @@ class ExerciseDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${exercise.time} секунд',
+                          '${exercise.time} хвилин',
                           style: const TextStyle(
                             fontSize: 16,
                             // color: Colors.black,
@@ -179,7 +179,7 @@ class _ExerciseViewState extends State<ExerciseView> {
 
   bool get isActive => _timer?.isActive ?? false;
 
-  void startExercise() async {
+  Future<void> startExercise() async {
     buyTime = DateTime.now();
     z.isNegative
         ? stopExercise()
