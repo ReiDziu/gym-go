@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:gym_go/constant/routes.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();

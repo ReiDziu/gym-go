@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gym_go/constant/constants.dart';
+import 'package:gym_go/constant/colors.dart';
 import 'package:gym_go/constant/routes.dart';
 import 'package:gym_go/di.dart';
 import 'package:gym_go/model/Exercise.dart';
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: primaryBlack,
+        primarySwatch: primarySwatch,
       ),
       home: const SplashScreen(),
       onGenerateRoute: _onGenerateRoute,
