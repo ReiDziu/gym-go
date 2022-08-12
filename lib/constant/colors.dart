@@ -7,7 +7,7 @@ const Color color_icon_2 = Color(0xFF905330);
 // Text
 const Color color_text = Color(0xFFEFEDE8);
 // Background
-const Color color_backgroud = Color(0xFF033249);
+const Color color_background = Color(0xFF033249);
 const Color color_transparent = Color(0x00000000);
 
 const MaterialColor primarySwatch = MaterialColor(
