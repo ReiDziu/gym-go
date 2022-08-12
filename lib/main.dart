@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:just_more_fitness/constants.dart';
-import 'package:just_more_fitness/di.dart';
-import 'package:just_more_fitness/model/UserProfile.dart';
-import 'package:just_more_fitness/routes.dart';
-import 'package:just_more_fitness/service/generation/db_generation.dart';
-import 'package:just_more_fitness/ui/screens/exercise_details/ExerciseDetails.dart';
-import 'package:just_more_fitness/ui/screens/first_run/first_run.dart';
-import 'package:just_more_fitness/ui/screens/home/HomeScreen.dart';
-import 'package:just_more_fitness/ui/screens/splash/SplashScreen.dart';
+import 'package:gym_go/constant/constants.dart';
+import 'package:gym_go/constant/routes.dart';
+import 'package:gym_go/di.dart';
+import 'package:gym_go/model/Exercise.dart';
+import 'package:gym_go/module/home/home_screen.dart';
+import 'package:gym_go/module/splash/splash_screen.dart';
+import 'package:gym_go/service/generation/db_generation.dart';
+import 'package:gym_go/service/navigation/navigation_service.dart';
+import 'package:gym_go/ui/screens/exercise_details/ExerciseDetails.dart';
+import 'package:gym_go/ui/screens/first_run/first_run.dart';
+import 'package:gym_go/ui/screens/first_run/first_run_view_model.dart';
+import 'package:injector/injector.dart';
 
-void main() async {
+void main() {
   InjectorManager.inject();
 
   // await CONSTANTS.init();
@@ -18,6 +21,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     CONSTANTS.init();
@@ -25,37 +30,37 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: primaryBlack,
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
       onGenerateRoute: _onGenerateRoute,
     );
   }
 
-  Route<dynamic> _onGenerateRoute(RouteSettings settings) {
+  Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case SPLASH_SCREEN:
-        return MaterialPageRoute(
-          builder: (context) => SplashScreen(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const SplashScreen(),
           settings: settings,
         );
-        break;
       case FIRST_RUN:
-        return MaterialPageRoute(
-          builder: (context) => FirstRun(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => FirstRun(
+            viewModel: FirstRunViewModel(
+              navigationService: Injector.appInstance.get<NavigationService>(),
+            ),
+          ),
           settings: settings,
         );
-        break;
       case HOME_SCREEN:
-        return MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => const HomeScreen(),
           settings: settings,
         );
-        break;
       case EXERCISE_DETAILS:
-        return MaterialPageRoute(
-          builder: (context) => ExerciseDetailsScreen(settings.arguments),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ExerciseDetailsScreen(settings.arguments as Exercise),
           settings: settings,
         );
-        break;
       default:
         assert(false, 'Need to implement ${settings.name}');
         return null;

@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:just_more_fitness/constants.dart';
-import 'package:just_more_fitness/db/DatabaseService.dart';
-import 'package:just_more_fitness/db/UserRepo.dart';
-import 'package:just_more_fitness/model/Goal.dart';
-import 'package:just_more_fitness/model/UserProfile.dart';
-import 'package:just_more_fitness/routes.dart';
-import 'package:just_more_fitness/service/generation/db_generation.dart';
-import 'package:just_more_fitness/service/navigation/navigation_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gym_go/constant/constants.dart';
+import 'package:gym_go/constant/routes.dart';
+import 'package:gym_go/db/database_service.dart';
+import 'package:gym_go/model/Goal.dart';
+import 'package:gym_go/model/UserProfile.dart';
+import 'package:gym_go/service/navigation/navigation_service.dart';
 
 class FirstRunViewModel with ChangeNotifier {
   FirstRunViewModel({
-    this.navigationService,
+    required this.navigationService,
   });
 
   final NavigationService navigationService;
   UserProfile user; //RAMDB.appInstance.user..selectedGoal = CONSTANTS.allGoals[0];
 
-  get sex => user.sex;
+  Sex? get sex => user.sex;
 
   void changeSex() {
     user.sex = sex == Sex.MALE ? Sex.FEMALE : Sex.MALE;
-    print(sex);
     notifyListeners();
   }
 
@@ -73,7 +69,7 @@ class FirstRunViewModel with ChangeNotifier {
   }
 
   // ValueCallback<void> nextPageAction;
-  ValueCallback<String> snackAction;
+  late ValueCallback<String> snackAction;
 
   void nextPageAction(int page, VoidCallback callback, BuildContext context) => page == 4 ? _move(context) : callback();
 

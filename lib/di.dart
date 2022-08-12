@@ -1,16 +1,19 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
+import 'package:gym_go/module/home/home_screen_vm.dart';
+import 'package:gym_go/service/navigation/navigation_service.dart';
+import 'package:gym_go/ui/screens/first_run/first_run_view_model.dart';
 import 'package:injector/injector.dart';
-import 'package:just_more_fitness/service/navigation/navigation_service.dart';
-import 'package:just_more_fitness/view_model/HomeScreenViewModel.dart';
-import 'package:just_more_fitness/view_model/first_run_view_model.dart';
 
 class InjectorManager {
-  static const String dnNoTokenShareRepository = "_dnNoTokenShareRepository";
-  static const String startUpExecutor = "startUpExecutionProcess";
+  // static const String dnNoTokenShareRepository = '_dnNoTokenShareRepository';
+  // static const String startUpExecutor = 'startUpExecutionProcess';
 
   static void inject() {
-    Injector injector = Injector.appInstance;
+    final Injector injector = Injector.appInstance;
 
-    injector.registerSingleton<NavigationService>(() => NavigationService());
+    injector
+      ..registerSingleton<NavigationService>(() => NavigationService())
 
 //     injector.registerDependency<SplashNotifier>(() {
 //       final AuthenticationService authenticationService =
@@ -27,24 +30,23 @@ class InjectorManager {
 //       );
 //     });
 
-    // injector.registerSingleton<SplashNotifier>(() {
-    //   return Injector.appInstance.get<SplashNotifier>();
-    // }, override: true, dependencyName: InjectorManager.startUpExecutor);
+      // injector.registerSingleton<SplashNotifier>(() {
+      //   return Injector.appInstance.get<SplashNotifier>();
+      // }, override: true, dependencyName: InjectorManager.startUpExecutor);
 
-    injector.registerDependency<FirstRunViewModel>(() {
-      final NavigationService navigationService = injector.get<NavigationService>();
+      ..registerDependency<FirstRunViewModel>(() {
+        final NavigationService navigationService = injector.get<NavigationService>();
 
-      return FirstRunViewModel(
-        navigationService: navigationService,
-      );
-    });
+        return FirstRunViewModel(
+          navigationService: navigationService,
+        );
+      })
+      ..registerDependency<HomeScreenViewModel>(() {
+        final NavigationService navigationService = injector.get<NavigationService>();
 
-    injector.registerDependency<HomeScreenViewModel>(() {
-      final NavigationService navigationService = injector.get<NavigationService>();
-
-      return HomeScreenViewModel(
-        navigationService: navigationService,
-      );
-    });
+        return HomeScreenViewModel(
+          navigationService: navigationService,
+        );
+      });
   }
 }

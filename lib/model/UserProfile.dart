@@ -1,6 +1,4 @@
-import 'package:just_more_fitness/model/Goal.dart';
-import 'package:just_more_fitness/service/generation/db_generation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gym_go/model/Goal.dart';
 
 enum Sex {
   MALE,

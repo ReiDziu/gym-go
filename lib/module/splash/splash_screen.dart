@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:just_more_fitness/routes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gym_go/constant/routes.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return const Material(
       child: Center(child: CircularProgressIndicator()),
     );
   }

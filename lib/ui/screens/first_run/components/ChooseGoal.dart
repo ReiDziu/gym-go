@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:just_more_fitness/constants.dart';
-import 'package:just_more_fitness/model/Goal.dart';
+import 'package:gym_go/constant/constants.dart';
+import 'package:gym_go/model/Goal.dart';
 
 class ChooseGoal extends StatelessWidget {
   ///StatefulWidget {
-  ChooseGoal({
-    this.goals,
-    this.selectedGoal,
-    this.callback,
+  const ChooseGoal({
+    required this.goals,
+    required this.selectedGoal,
+    required this.callback,
+    super.key,
   });
 
   final List<String> goals;
@@ -48,8 +49,8 @@ class ChooseGoal extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       // controller: _scrollController,
-      itemCount: goals?.length ?? 0,
-      itemBuilder: (BuildContext context, int index) {
+      itemCount: goals.length,
+      itemBuilder: (context, index) {
         final String goal = goals[index];
 
         return _GoalCell(
@@ -66,11 +67,10 @@ class ChooseGoal extends StatelessWidget {
 
 class _GoalCell extends StatelessWidget {
   const _GoalCell({
-    Key key,
-    @required this.isSelected,
-    @required this.title,
-    @required this.selectAction,
-  }) : super(key: key);
+    required this.isSelected,
+    required this.title,
+    required this.selectAction,
+  });
 
   final bool isSelected;
   final String title;
@@ -78,52 +78,53 @@ class _GoalCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
-      Container(
-        color: isSelected ? const Color.fromRGBO(235, 245, 242, 1) : Color.fromRGBO(243, 243, 243, 1),
-        child: InkWell(
-          onTap: selectAction,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: 8.0,
-                height: 80.0,
-                color: isSelected ? Colors.green : Colors.transparent,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              const SizedBox(
-                width: 16.0,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                        letterSpacing: 0,
-                      ),
-                    ),
-                  ],
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: isSelected ? const Color.fromRGBO(235, 245, 242, 1) : const Color.fromRGBO(243, 243, 243, 1),
+          child: InkWell(
+            onTap: selectAction,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: 8.0,
+                  height: 80.0,
+                  color: isSelected ? Colors.green : Colors.transparent,
                 ),
-              ),
-              const SizedBox(
-                width: 16.0,
-              ),
-            ],
+                const SizedBox(
+                  width: 10,
+                ),
+                const SizedBox(
+                  width: 16.0,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  width: 16.0,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      Align(
-        alignment: Alignment.bottomCenter,
-      ),
-    ]);
+        const Align(
+          alignment: Alignment.bottomCenter,
+        ),
+      ],
+    );
   }
 }

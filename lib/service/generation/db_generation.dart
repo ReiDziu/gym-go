@@ -1,7 +1,7 @@
-import 'package:just_more_fitness/db/DatabaseService.dart';
-import 'package:just_more_fitness/db/UserRepo.dart';
-import 'package:just_more_fitness/model/Exercise.dart';
-import 'package:just_more_fitness/model/UserProfile.dart';
+import 'package:gym_go/db/database_service.dart';
+import 'package:gym_go/db/UserRepo.dart';
+import 'package:gym_go/model/Exercise.dart';
+import 'package:gym_go/model/UserProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CONSTANTS {

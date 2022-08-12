@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class EatProgram extends StatelessWidget {
+  const EatProgram({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width*0.9,
-          child: Text('''
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          child: const Text(
+            '''
 Перший прийом їжі: 
 
 Вівсяна каша, склянка кави з шматочком чорного шоколаду, груша. 
@@ -41,7 +44,8 @@ class EatProgram extends StatelessWidget {
 Гречка, відварене філе риби, апельсин або яблуко, зелений чай. 
 Творог нежирний з малиновим варенням, банан, чорний чай. 
 Овочевий салат, яєчні білки 5 штук (без жовтків), морс з ягід.
-'''),
+''',
+          ),
         ),
       ),
     );

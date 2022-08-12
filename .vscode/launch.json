@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "just_more_fitness",
+            "name": "launch debug dev",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "just_more_fitness (profile mode)",
+            "name": "just-more-fitness (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

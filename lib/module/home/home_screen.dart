@@ -1,37 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_material_pickers/helpers/show_number_picker.dart';
-import 'package:flutter_material_pickers/helpers/show_radio_picker.dart';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:gym_go/constant/constants.dart';
+import 'package:gym_go/db/database_service.dart';
+import 'package:gym_go/model/UserProfile.dart';
+import 'package:gym_go/module/home/components/ChooseExercise.dart';
+import 'package:gym_go/module/home/home_screen_vm.dart';
+import 'package:gym_go/ui/screens/eat/EatProgram.dart';
+import 'package:gym_go/ui/screens/exercise_details/ExerciseDetails.dart';
+import 'package:gym_go/ui/screens/first_run/first_run_view_model.dart';
 import 'package:injector/injector.dart';
-import 'package:just_more_fitness/constants.dart';
-import 'package:just_more_fitness/db/DatabaseService.dart';
-import 'package:just_more_fitness/db/UserRepo.dart';
-import 'package:just_more_fitness/model/UserProfile.dart';
-import 'package:just_more_fitness/service/generation/db_generation.dart';
-import 'package:just_more_fitness/ui/screens/eat/EatProgram.dart';
-import 'package:just_more_fitness/ui/screens/exercise_details/ExerciseDetails.dart';
-import 'package:just_more_fitness/ui/screens/home/components/ChooseExercise.dart';
-import 'package:just_more_fitness/view_model/HomeScreenViewModel.dart';
-import 'package:just_more_fitness/view_model/first_run_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   bool _isAppBarOpen = true;
 
   bool frameLoading = true;
-
-  _getPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-  }
 
   UserProfile user; // = RAMDB.appInstance.user;
 
@@ -314,30 +307,30 @@ class _HomeScreenState extends State<HomeScreen> {
           );
   }
 
-  _displayDialog(BuildContext context, String title, ValueCallback<double> callback) async {
-    TextEditingController _textFieldController = TextEditingController();
+  Future<void> _displayDialog(BuildContext context, String title, ValueCallback<double> callback) async {
+    final TextEditingController textFieldController = TextEditingController();
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(title),
           content: TextField(
-            controller: _textFieldController,
+            controller: textFieldController,
             textInputAction: TextInputAction.go,
-            keyboardType: TextInputType.numberWithOptions(),
+            keyboardType: TextInputType.number,
             // decoration: InputDecoration(hintText: hint),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Відмінити'),
+              child: const Text('Відмінити'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Підтвердити'),
+              child: const Text('Підтвердити'),
               onPressed: () {
-                final double value = int.tryParse(_textFieldController.text)?.toDouble() ?? 0;
+                final double value = int.tryParse(textFieldController.text)?.toDouble() ?? 0;
                 callback(value);
                 Navigator.of(context).pop();
               },

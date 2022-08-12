@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-const color_transparent = Color.fromRGBO(0, 0, 0, 0);
+const Color color_transparent = Color.fromRGBO(0, 0, 0, 0);
 const MaterialColor primaryBlack = MaterialColor(
   _blackPrimaryValue,
   <int, Color>{
@@ -21,5 +19,3 @@ const MaterialColor primaryBlack = MaterialColor(
 const int _blackPrimaryValue = 0xFF000000;
 
 typedef ValueCallback<T> = void Function(T);
-
-
