@@ -1,4 +1,4 @@
-import 'package:just_more_fitness/model/Goal.dart';
+import 'package:gym_go/model/Goal.dart';
 
 enum Sex {
   MALE,
@@ -6,18 +6,17 @@ enum Sex {
 }
 
 class UserProfile {
-  Sex sex;
+  Sex? sex;
 
-  Goal selectedGoal;
+  Goal? selectedGoal;
 
-  int selectedLevel;
+  int? selectedLevel;
 
-  List<Goal> selectedBodyParts;
+  List<Goal> selectedBodyParts = <Goal>[];
 
-  int age;
-  int height;
-  int weight;
-
+  int? age;
+  int? height;
+  int? weight;
 
   double drinkedWater = 0;
   double burnedCalories = 0;

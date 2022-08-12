@@ -1,6 +1,6 @@
 class Goal {
   Goal({
-    this.title,
+    required this.title,
   });
 
   String title;

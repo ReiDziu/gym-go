@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:just_more_fitness/constants.dart';
+import 'package:gym_go/constant/constants.dart';
 
 class LevelChooser extends StatelessWidget {
   const LevelChooser({
-    this.levelsCount,
-    this.selectedLevel,
-    this.callback,
+    required this.levelsCount,
+    required this.selectedLevel,
+    required this.callback,
+    super.key,
   });
 
   final int levelsCount;
@@ -16,7 +17,7 @@ class LevelChooser extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(
+      children: List<Widget>.generate(
         levelsCount,
         (index) {
           return IconButton(

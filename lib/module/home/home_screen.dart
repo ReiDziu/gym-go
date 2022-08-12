@@ -1,34 +1,34 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_material_pickers/helpers/show_number_picker.dart';
-import 'package:flutter_material_pickers/helpers/show_radio_picker.dart';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:gym_go/constant/constants.dart';
+import 'package:gym_go/db/database_service.dart';
+import 'package:gym_go/model/UserProfile.dart';
+import 'package:gym_go/module/home/components/ChooseExercise.dart';
+import 'package:gym_go/module/home/home_screen_vm.dart';
+import 'package:gym_go/ui/screens/eat/EatProgram.dart';
+import 'package:gym_go/ui/screens/exercise_details/ExerciseDetails.dart';
+import 'package:gym_go/ui/screens/first_run/first_run_view_model.dart';
 import 'package:injector/injector.dart';
-import 'package:just_more_fitness/constants.dart';
-import 'package:just_more_fitness/db/DatabaseService.dart';
-import 'package:just_more_fitness/model/UserProfile.dart';
-import 'package:just_more_fitness/ui/screens/eat/EatProgram.dart';
-import 'package:just_more_fitness/ui/screens/exercise_details/ExerciseDetails.dart';
-import 'package:just_more_fitness/ui/screens/home/components/ChooseExercise.dart';
-import 'package:just_more_fitness/view_model/HomeScreenViewModel.dart';
-import 'package:just_more_fitness/view_model/first_run_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   bool _isAppBarOpen = true;
 
-  _getPrefs() async {
+  Future<void> _getPrefs() async {
     prefs = await SharedPreferences.getInstance();
   }
 
-  final UserProfile user = RAMDB.appInstance.user;
+  final UserProfile user = RAMDB.appInstance.user!;
 
   final HomeScreenViewModel viewModel = Injector.appInstance.get<HomeScreenViewModel>();
 
@@ -41,10 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('511FITNESS'),
+        title: const Text('GymGo'),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -61,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               color: Colors.grey[800],
               child: Column(
-                children: [
+                children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
+                    children: <Widget>[
+                      const Icon(
                         Icons.outlined_flag_rounded,
                         size: 38,
                         color: Colors.greenAccent,
@@ -74,11 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           showMaterialRadioPicker(
                             context: context,
-                            title: "Оберіть нову ціль",
+                            title: 'Оберіть нову ціль',
                             confirmText: 'Підтвердити',
                             cancelText: 'Відмінити',
                             items: FirstRunViewModel.goals.map((e) => e.title).toList(),
-                            selectedValue: user.selectedGoal.title,
+                            // selectedValue: user?.selectedGoal?.title,
                             onChanged: (value) {
                               setState(
                                 () {
@@ -90,17 +90,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                         child: Column(
-                          children: [
+                          children: <Widget>[
                             Text(
                               'Основна ціль'.toUpperCase(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.greenAccent,
                                 fontSize: 23,
                               ),
                             ),
                             Text(
-                              user.selectedGoal.title,
-                              style: TextStyle(
+                              user.selectedGoal!.title,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 21,
                               ),
@@ -111,26 +111,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       InkWell(
                         onTap: () => showMaterialNumberPicker(
                           context: context,
-                          title: "Оберіть поточну вагу",
+                          title: 'Оберіть поточну вагу',
                           maxNumber: 200,
                           minNumber: 40,
-                          confirmText: "Підтвердити",
-                          cancelText: "Відмінити",
+                          confirmText: 'Підтвердити',
+                          cancelText: 'Відмінити',
                           selectedNumber: viewModel.weight,
                           onChanged: (value) => setState(() => viewModel.weight = value),
                         ),
                         child: Column(
-                          children: [
+                          children: <Widget>[
                             Text(
                               'Вага'.toUpperCase(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.pink,
                                 fontSize: 15,
                               ),
                             ),
                             Text(
                               '${user.weight}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 35,
                               ),
@@ -138,15 +138,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.fitness_center_rounded,
                         size: 38,
-                        color: Colors.yellowAccent,
+                        color: Colors.orangeAccent,
                       ),
                       Text(
                         '${user.selectedLevel}',
-                        style: TextStyle(
-                          color: Colors.yellow,
+                        style: const TextStyle(
+                          color: Colors.orange,
                           fontSize: 38,
                         ),
                       ),
@@ -154,27 +154,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   if (_isAppBarOpen)
                     Column(
-                      children: [
+                      children: <Widget>[
                         Row(
-                          children: [
-                            Icon(
+                          children: <Widget>[
+                            const Icon(
                               Icons.local_drink_rounded,
                               size: 44,
                               color: Colors.lightBlue,
                             ),
                             Expanded(
                               child: Stack(
-                                children: [
+                                children: <Widget>[
                                   LinearProgressIndicator(
                                     value: viewModel.drinkedWater / viewModel.drinkGoal,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
-                                    backgroundColor: Color(0x33000000),
+                                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightBlueAccent),
+                                    backgroundColor: const Color(0x33000000),
                                     minHeight: 33,
                                   ),
                                   Center(
                                     child: Text(
                                       '${(viewModel.drinkedWater).toInt()} / ${(viewModel.drinkGoal).toInt()} мл',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 22,
                                       ),
@@ -185,27 +185,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
-                          children: [
-                            Icon(
+                          children: <Widget>[
+                            const Icon(
                               Icons.restaurant_rounded,
                               size: 44,
                               color: Colors.redAccent,
                             ),
                             Expanded(
                               child: Stack(
-                                children: [
+                                children: <Widget>[
                                   LinearProgressIndicator(
                                     value: viewModel.burnedCalories / viewModel.caloriesGoal,
-                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.lightGreen),
-                                    backgroundColor: Color(0x33000000),
+                                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.lightGreen),
+                                    backgroundColor: const Color(0x33000000),
                                     minHeight: 33,
                                   ),
                                   Center(
                                     child: Text(
                                       '${(viewModel.burnedCalories).toInt()} / ${(viewModel.caloriesGoal).toInt()} ккал',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 22,
                                       ),
@@ -216,17 +216,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         RawMaterialButton(
                           fillColor: Colors.amber,
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => EatProgram(),
+                              MaterialPageRoute<dynamic>(
+                                builder: (context) => const EatProgram(),
                               ),
                             );
-
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -256,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 callback: (value) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<dynamic>(
                       builder: (context) => ExerciseDetailsScreen(value),
                     ),
                   );
@@ -269,14 +268,16 @@ class _HomeScreenState extends State<HomeScreen> {
       // bottomNavigationBar: HomeBottomNavigationBar(items: []),
       // body: _list[_page],
       floatingActionButton: SpeedDial(
+        backgroundColor: Colors.blue[900],
+        foregroundColor: Colors.orangeAccent,
         icon: Icons.add,
         activeIcon: Icons.remove,
         elevation: 2.0,
-        children: [
+        children: <SpeedDialChild>[
           SpeedDialChild(
-            child: Icon(Icons.local_drink_rounded),
+            child: const Icon(Icons.local_drink_rounded),
             label: 'Додати воду',
-            labelStyle: TextStyle(fontSize: 18.0),
+            labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
               _displayDialog(context, 'Введіть кількість випитої води', (value) {
                 setState(() {
@@ -286,9 +287,9 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           SpeedDialChild(
-            child: Icon(Icons.restaurant_rounded),
+            child: const Icon(Icons.restaurant_rounded),
             label: 'Додати калорії',
-            labelStyle: TextStyle(fontSize: 18.0),
+            labelStyle: const TextStyle(fontSize: 18.0),
             onTap: () {
               _displayDialog(context, 'Введіть кількість калорій', (value) {
                 setState(() {
@@ -302,30 +303,30 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _displayDialog(BuildContext context, String title, ValueCallback<double> callback) async {
-    TextEditingController _textFieldController = TextEditingController();
+  Future<void> _displayDialog(BuildContext context, String title, ValueCallback<double> callback) async {
+    final TextEditingController textFieldController = TextEditingController();
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(title),
           content: TextField(
-            controller: _textFieldController,
+            controller: textFieldController,
             textInputAction: TextInputAction.go,
-            keyboardType: TextInputType.numberWithOptions(),
+            keyboardType: TextInputType.number,
             // decoration: InputDecoration(hintText: hint),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Відмінити'),
+              child: const Text('Відмінити'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Підтвердити'),
+              child: const Text('Підтвердити'),
               onPressed: () {
-                final double value = int.tryParse(_textFieldController.text)?.toDouble() ?? 0;
+                final double value = int.tryParse(textFieldController.text)?.toDouble() ?? 0;
                 callback(value);
                 Navigator.of(context).pop();
               },
