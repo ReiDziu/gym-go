@@ -1,5 +1,4 @@
-import 'package:just_more_fitness/model/Goal.dart';
-import 'package:just_more_fitness/service/generation/db_generation.dart';
+import 'package:gym_go/service/generation/db_generation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum Sex {
@@ -8,9 +7,9 @@ enum Sex {
 }
 
 class UserProfile {
-  static SharedPreferences prefs;
+  static late SharedPreferences prefs;
 
-  static init(SharedPreferences preferences) {
+  static void init(SharedPreferences preferences) {
     prefs = preferences;
   }
 
@@ -20,10 +19,10 @@ class UserProfile {
     prefs.setBool('genderMale', sex == Sex.MALE);
   }
 
-  String get selectedGoal => prefs?.getString('selectedGoal') ?? CONSTANTS.allGoals[0];
+  String get selectedGoal => prefs.getString('selectedGoal') ?? CONSTANTS.allGoals[0];
 
   set selectedGoal(String goal) {
-    prefs?.setString('selectedGoal', goal);
+    prefs.setString('selectedGoal', goal);
   }
 
   int get selectedLevel => prefs.getInt('level') ?? 0;
@@ -32,7 +31,7 @@ class UserProfile {
     prefs.setInt('level', level);
   }
 
-  List<String> get selectedBodyParts => prefs.getStringList('selectedBodyParts');
+  List<String> get selectedBodyParts => prefs.getStringList('selectedBodyParts') ?? [];
 
   set selectedBodyParts(List<String> selectedBodyParts) {
     prefs.setStringList('selectedBodyParts', selectedBodyParts);
@@ -41,7 +40,7 @@ class UserProfile {
   int get age => prefs.getInt('age') ?? 25;
 
   set age(int age) {
-    prefs?.setInt('age', age);
+    prefs.setInt('age', age);
   }
 
   int get height => prefs.getInt('height') ?? 180;

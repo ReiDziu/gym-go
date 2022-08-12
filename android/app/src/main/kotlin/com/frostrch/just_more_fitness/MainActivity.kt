@@ -1,4 +1,4 @@
-package com.frostrch.just_more_fitness
+package com.dziunorb.gym_go
 
 import io.flutter.embedding.android.FlutterActivity
 

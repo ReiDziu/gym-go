@@ -1,6 +1,4 @@
-# just_more_fitness
-
-511FITNESS
+# GymGo
 
 ## Getting Started
 

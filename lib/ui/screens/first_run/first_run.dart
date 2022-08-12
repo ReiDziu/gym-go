@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_material_pickers/helpers/show_number_picker.dart';
-import 'package:injector/injector.dart';
-import 'package:just_more_fitness/db/UserRepo.dart';
-import 'package:just_more_fitness/model/UserProfile.dart';
-import 'package:just_more_fitness/service/generation/db_generation.dart';
-import 'package:just_more_fitness/ui/screens/first_run/components/ChooseBodyParts.dart';
-import 'package:just_more_fitness/ui/screens/first_run/components/ChooseGoal.dart';
-import 'package:just_more_fitness/ui/screens/first_run/components/SliderSwitch.dart';
-import 'package:just_more_fitness/ui/screens/first_run/components/level_chooser.dart';
-import 'package:just_more_fitness/view_model/first_run_view_model.dart';
+import 'package:gym_go/db/user_repo.dart';
+import 'package:gym_go/model/UserProfile.dart';
+import 'package:gym_go/service/generation/db_generation.dart';
+import 'package:gym_go/ui/screens/first_run/components/level_chooser.dart';
+import 'package:gym_go/ui/screens/first_run/components/slider_switch.dart';
+import 'package:gym_go/ui/screens/first_run/first_run_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FirstRun extends StatefulWidget {
+  const FirstRun({
+    required this.viewModel,
+    super.key,
+  });
+
+  final FirstRunViewModel viewModel; // = Injector.appInstance.get<FirstRunViewModel>();
+
   @override
   _FirstRunState createState() => _FirstRunState();
 }
@@ -23,9 +26,9 @@ class _FirstRunState extends State<FirstRun> {
   final double heightOfBottomView = 106;
   int currentPage = 0;
   bool frameLoading = true;
-  PageController _controller;
+  late PageController _controller;
 
-  final FirstRunViewModel viewModel = Injector.appInstance.get<FirstRunViewModel>();
+  FirstRunViewModel get viewModel => widget.viewModel;
 
   @override
   void initState() {
@@ -35,7 +38,7 @@ class _FirstRunState extends State<FirstRun> {
       initialPage: currentPage,
     );
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       viewModel.user = UserRepo.getUser(prefs)..selectedGoal = CONSTANTS.allGoals[0];
       setState(() => frameLoading = false);
@@ -67,7 +70,7 @@ class _FirstRunState extends State<FirstRun> {
   void onLogoutButtonPressed() {
     showDialog<void>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text('Log out'),
           content: const Text('You will be returned to the home screen'),
@@ -104,7 +107,7 @@ class _FirstRunState extends State<FirstRun> {
     // };
 
     return frameLoading
-        ? Material(child: Center(child: CircularProgressIndicator()))
+        ? const Material(child: Center(child: CircularProgressIndicator()))
         : Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -126,7 +129,7 @@ class _FirstRunState extends State<FirstRun> {
                   centerTitle: true,
                   title: SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
-                    child: Text('511FITNESS'), // LogsExportPixellotlogo(),
+                    child: const Text('511FITNESS'), // LogsExportPixellotlogo(),
                   ),
                   // actions: <Widget>[
                   //   IconButton(
@@ -138,219 +141,108 @@ class _FirstRunState extends State<FirstRun> {
                 ),
                 body: ChangeNotifierProvider<FirstRunViewModel>.value(
                   value: viewModel,
-                  child: Consumer<FirstRunViewModel>(builder: (_, FirstRunViewModel viewModel, __) {
-                    return Column(
-                      children: <Widget>[
-                        // Indicator(
-                        //   pagesCount: pagesCount,
-                        //   controller: _controller,
-                        // ),
-                        Expanded(
-                          child: Stack(
-                            children: <Widget>[
-                              PageView(
-                                controller: _controller,
-                                onPageChanged: _pageChanged,
-                                children: <Widget>[
-                                  WizardLayout(
-                                    pageTitle: 'ВКАЖІТЬ СТАТЬ',
-                                    content: Center(
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: deviceWidth * 0.12,
-                                          ),
-                                          child: SliderSwitch(
-                                            key: ValueKey('SexToggle'),
-                                            onTap: () => viewModel.changeSex(),
-                                            enabled: viewModel.sex == Sex.FEMALE,
+                  child: Consumer<FirstRunViewModel>(
+                    builder: (_, viewModel, __) {
+                      return Column(
+                        children: <Widget>[
+                          // Indicator(
+                          //   pagesCount: pagesCount,
+                          //   controller: _controller,
+                          // ),
+                          Expanded(
+                            child: Stack(
+                              children: <Widget>[
+                                PageView(
+                                  controller: _controller,
+                                  onPageChanged: _pageChanged,
+                                  children: <Widget>[
+                                    WizardLayout(
+                                      pageTitle: 'ВКАЖІТЬ СТАТЬ',
+                                      content: Center(
+                                        child: SizedBox(
+                                          width: double.infinity,
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: deviceWidth * 0.12,
+                                            ),
+                                            child: SliderSwitch(
+                                              key: const ValueKey('SexToggle'),
+                                              onTap: () => viewModel.changeSex(),
+                                              enabled: viewModel.sex == Sex.FEMALE,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  WizardLayout(
-                                    pageTitle: 'ОБЕРІТЬ ОСНОВНУ ЦІЛЬ',
-                                    content: SizedBox(
-                                      width: double.infinity,
-                                      child: ChooseGoal(
-                                        goals: CONSTANTS.allGoals,
-                                        selectedGoal: viewModel.selectedGoal,
-                                        callback: (goal) => viewModel.selectedGoal = goal,
+                                    WizardLayout(
+                                      pageTitle: 'ВКАЖІТЬ ВАШ РІВЕНЬ ПІДГОТОВКИ',
+                                      content: SizedBox(
+                                        width: double.infinity,
+                                        child: Center(
+                                          child: LevelChooser(
+                                            levelsCount: 6,
+                                            selectedLevel: viewModel.selectedLevel,
+                                            callback: (index) {
+                                              viewModel.selectedLevel = index + 1;
+                                            },
+                                          ),
+                                        ),
                                       ),
                                     ),
+                                  ],
+                                ),
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: NavigationArrows(
+                                    pagesCount: pagesCount,
+                                    controller: _controller,
+                                    onPrevButtonTap: _onPrevButtonTap,
+                                    onNextButtonTap: _onNextButtonTap,
                                   ),
-                                  WizardLayout(
-                                    pageTitle: 'ВКАЖІТЬ ВАШ РІВЕНЬ ПІДГОТОВКИ',
-                                    content: SizedBox(
-                                      width: double.infinity,
-                                      child: Center(
-                                        child: LevelChooser(
-                                          levelsCount: 6,
-                                          selectedLevel: viewModel.selectedLevel,
-                                          callback: (index) {
-                                            viewModel.selectedLevel = index + 1;
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    height: heightOfBottomView,
+                                    decoration: const BoxDecoration(
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, 0.18),
+                                          blurRadius: 6,
+                                        )
+                                      ],
+                                      color: Color.fromRGBO(255, 255, 255, 0.8),
+                                    ),
+                                    child: Center(
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.8,
+                                        child: ElevatedButton(
+                                          child: const Text(
+                                            'ДАЛІ',
+                                          ),
+                                          // style: ButtonStyle(
+                                          //   backgroundColor: Colors.black,
+                                          // ),
+                                          // fillColor: Color.fromRGBO(0, 154, 199, 1),
+                                          // color_0_154_199,
+                                          //  borderRadius: const BorderRadius.all(
+                                          //   Radius.circular(30.0),
+                                          // ),
+                                          onPressed: () {
+                                            viewModel.nextPageAction(currentPage, _onNextButtonTap, context);
                                           },
                                         ),
                                       ),
                                     ),
                                   ),
-                                  WizardLayout(
-                                    pageTitle: "ОБЕРІТЬ ГРУПИ М'ЯЗІВ",
-                                    content: SizedBox(
-                                      width: double.infinity,
-                                      child: ChooseBodyParts(
-                                        bodyParts: CONSTANTS.allBodyParts,
-                                        selectedBodyParts: viewModel.selectedBodyParts,
-                                        selectAction: (part) => viewModel.selectBodyPart(part),
-                                        unselectAction: (part) => viewModel.removeBodyPart(part),
-                                      ),
-                                    ),
-                                  ),
-                                  WizardLayout(
-                                    pageTitle: 'ВКАЖІТЬ СВОЇ ПАРАМЕТРИ',
-                                    content: SizedBox(
-                                      width: double.infinity,
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                                          child: Row(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text('ВІК'),
-                                                    RawMaterialButton(
-                                                      child: Text(
-                                                        '${viewModel.age}',
-                                                        style: TextStyle(fontSize: 33),
-                                                      ),
-                                                      onPressed: () => showMaterialNumberPicker(
-                                                        context: context,
-                                                        title: "Вкажіть свій вік",
-                                                        maxNumber: 113,
-                                                        minNumber: 13,
-                                                        // step: 5,
-                                                        confirmText: "Підтвердити",
-                                                        cancelText: "Відмінити",
-                                                        selectedNumber: viewModel.age,
-                                                        onChanged: (value) => setState(() => viewModel.age = value),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text('ЗРІСТ'),
-                                                    RawMaterialButton(
-                                                      child: Text(
-                                                        '${viewModel.height}',
-                                                        style: TextStyle(fontSize: 33),
-                                                      ),
-                                                      onPressed: () => showMaterialNumberPicker(
-                                                        context: context,
-                                                        title: "Вкажіть свій ріст",
-                                                        maxNumber: 220,
-                                                        minNumber: 140,
-                                                        // step: 5,
-                                                        confirmText: "Підтвердити",
-                                                        cancelText: "Відмінити",
-                                                        selectedNumber: viewModel.height,
-                                                        onChanged: (value) => setState(() => viewModel.height = value),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Text('ВАГА'),
-                                                    RawMaterialButton(
-                                                      child: Text(
-                                                        '${viewModel.weight}',
-                                                        style: TextStyle(fontSize: 33),
-                                                      ),
-                                                      onPressed: () => showMaterialNumberPicker(
-                                                        context: context,
-                                                        title: "Вкажіть свою вагу",
-                                                        maxNumber: 200,
-                                                        minNumber: 40,
-                                                        // step: 5,
-                                                        confirmText: "Підтвердити",
-                                                        cancelText: "Відмінити",
-                                                        selectedNumber: viewModel.weight,
-                                                        onChanged: (value) => setState(() => viewModel.weight = value),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: NavigationArrows(
-                                  pagesCount: pagesCount,
-                                  controller: _controller,
-                                  onPrevButtonTap: _onPrevButtonTap,
-                                  onNextButtonTap: _onNextButtonTap,
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  height: heightOfBottomView,
-                                  decoration: const BoxDecoration(
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        color: Color.fromRGBO(0, 0, 0, 0.18),
-                                        blurRadius: 6,
-                                      )
-                                    ],
-                                    color: Color.fromRGBO(255, 255, 255, 0.8),
-                                  ),
-                                  child: Center(
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.8,
-                                      child: ElevatedButton(
-                                        child: Text(
-                                          'ДАЛІ',
-                                        ),
-                                        // style: ButtonStyle(
-                                        //   backgroundColor: Colors.black,
-                                        // ),
-                                        // fillColor: Color.fromRGBO(0, 154, 199, 1),
-                                        // color_0_154_199,
-                                        //  borderRadius: const BorderRadius.all(
-                                        //   Radius.circular(30.0),
-                                        // ),
-                                        onPressed: () {
-                                          viewModel.nextPageAction(currentPage, _onNextButtonTap, context);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  }),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -360,8 +252,9 @@ class _FirstRunState extends State<FirstRun> {
 
 class WizardLayout extends StatelessWidget {
   const WizardLayout({
-    this.pageTitle,
-    this.content,
+    required this.pageTitle,
+    required this.content,
+    super.key,
   });
 
   final String pageTitle;
@@ -370,7 +263,6 @@ class WizardLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Center(
           child: SizedBox(
@@ -402,10 +294,11 @@ class WizardLayout extends StatelessWidget {
 
 class NavigationArrows extends StatelessWidget {
   const NavigationArrows({
-    this.pagesCount,
-    this.controller,
-    this.onPrevButtonTap,
-    this.onNextButtonTap,
+    required this.pagesCount,
+    required this.controller,
+    required this.onPrevButtonTap,
+    required this.onNextButtonTap,
+    super.key,
   });
 
   final int pagesCount;
@@ -413,13 +306,13 @@ class NavigationArrows extends StatelessWidget {
   final VoidCallback onPrevButtonTap;
   final VoidCallback onNextButtonTap;
 
-  Color getIconColor(bool isRightButtonDisabled) {
-    return isRightButtonDisabled ? Color.fromRGBO(202, 202, 202, 1) : Color.fromRGBO(0, 154, 199, 1);
+  Color getIconColor({required bool isRightButtonDisabled}) {
+    return isRightButtonDisabled ? const Color.fromRGBO(202, 202, 202, 1) : const Color.fromRGBO(0, 154, 199, 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    final int selectedPageIndex = (controller.hasClients && controller.page != null) ? controller.page.round() : 0;
+    final int selectedPageIndex = (controller.hasClients && controller.page != null) ? controller.page!.round() : 0;
 
     final bool isLeftButtonDisabled = selectedPageIndex == 0;
     final bool isRightButtonDisabled = selectedPageIndex == pagesCount - 1;
@@ -430,7 +323,7 @@ class NavigationArrows extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.2,
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.chevron_left,
               size: 52,
             ),
@@ -440,7 +333,7 @@ class NavigationArrows extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.2,
           child: IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.chevron_right,
               size: 52,
             ),

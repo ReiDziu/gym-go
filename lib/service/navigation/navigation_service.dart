@@ -5,9 +5,9 @@ class NavigationService {
 
   Future<dynamic> pushReplacementNamed(
     String routeName, {
-    dynamic arguments,
+    Object? arguments,
   }) async {
-    return await navigatorKey.currentState.pushReplacementNamed(
+    return await navigatorKey.currentState?.pushReplacementNamed(
       routeName,
       arguments: arguments,
     );
@@ -15,25 +15,25 @@ class NavigationService {
 
   Future<dynamic> pushNamedAndRemoveUntil(
     String routeName, {
-    dynamic arguments,
-    RoutePredicate predicate,
+    Object? arguments,
+    RoutePredicate? predicate,
   }) async {
-    return await navigatorKey.currentState.pushNamedAndRemoveUntil(
+    return await navigatorKey.currentState?.pushNamedAndRemoveUntil(
       routeName,
-      predicate ?? (Route<dynamic> route) => false,
+      predicate ?? (route) => false,
       arguments: arguments,
     );
   }
 
   Future<dynamic> pushNamed(
     String routeName, {
-    dynamic arguments,
+    Object? arguments,
   }) async {
-    return await navigatorKey.currentState.pushNamed(
+    return await navigatorKey.currentState?.pushNamed(
       routeName,
       arguments: arguments,
     );
   }
 
-  void goBack() => navigatorKey.currentState.pop();
+  void goBack() => navigatorKey.currentState?.pop();
 }
